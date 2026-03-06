@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>troojin — projects</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    #projects {
+      min-height: 100vh;
+      padding: 8rem 0 6rem;
+    }
+    .project-list { list-style: none; }
+    .project-item {
+      padding: 1.8rem 0;
+      border-top: 1px solid #111;
+      display: grid;
+      grid-template-columns: 2.5rem 1fr auto;
+      gap: 1.5rem;
+      align-items: baseline;
+      transition: opacity 0.2s;
+    }
+    .project-item:last-child { border-bottom: 1px solid #111; }
+    .project-item:hover { opacity: 0.4; }
+    .project-n {
+      font-size: 0.55rem;
+      color: #222;
+      letter-spacing: 0.1em;
+    }
+    .project-name {
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+    .project-desc {
+      font-size: 0.72rem;
+      line-height: 1.7;
+      color: #444;
+    }
+    .project-stack {
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: #222;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 600px) {
+      .project-item { grid-template-columns: 2rem 1fr; }
+      .project-stack { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">troojin</a>
+    <ul class="nav-links">
+      <li><a href="about.html">about</a></li>
+      <li><a href="projects.html">projects</a></li>
+    </ul>
+  </nav>
+
+  <section id="projects">
+    <div class="wrap">
+      <p class="section-label">projects</p>
+      <ul class="project-list">
+        <li class="project-item">
+          <span class="project-n">01</span>
+          <div>
+            <div class="project-name">Project One</div>
+            <div class="project-desc">What it does in one or two lines.</div>
+          </div>
+          <div class="project-stack">html · css · js</div>
+        </li>
+        <li class="project-item">
+          <span class="project-n">02</span>
+          <div>
+            <div class="project-name">Project Two</div>
+            <div class="project-desc">What problem it solves. Keep it short.</div>
+          </div>
+          <div class="project-stack">lua · js</div>
+        </li>
+        <li class="project-item">
+          <span class="project-n">03</span>
+          <div>
+            <div class="project-name">Project Three</div>
+            <div class="project-desc">Another thing you built.</div>
+          </div>
+          <div class="project-stack">html · css</div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-name">troojin</span>
+    <span class="footer-note">built by hand</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
