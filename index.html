@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>troojin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── INTRO ── */
+    #intro {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      cursor: pointer;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+    #intro.out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .wave {
+      font-size: 2.8rem;
+      display: inline-block;
+      animation: wv 2.2s ease-in-out infinite;
+      transform-origin: 70% 70%;
+      margin-bottom: 1rem;
+    }
+    @keyframes wv {
+      0%,100% { transform: rotate(0deg); }
+      20%     { transform: rotate(-18deg); }
+      40%     { transform: rotate(13deg); }
+      60%     { transform: rotate(-9deg); }
+      80%     { transform: rotate(7deg); }
+    }
+
+    .intro-name {
+      font-size: clamp(3rem, 13vw, 8rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      color: #fff;
+    }
+
+    .intro-hint {
+      margin-top: 2.5rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #222;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 0.2; }
+      50%      { opacity: 1; }
+    }
+
+    /* ── GRADIENT OVERLAY ── */
+    #gradient-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      pointer-events: none;
+      opacity: 0;
+      background: conic-gradient(
+        from 0deg at 50% 50%,
+        #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff, #06ffa5, #ff006e
+      );
+    }
+    #gradient-overlay.animate {
+      animation: gradientBurst 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes gradientBurst {
+      0%   { opacity: 0;   transform: scale(0.85); filter: blur(60px); }
+      30%  { opacity: 0.9; transform: scale(1.05); filter: blur(20px); }
+      70%  { opacity: 0.6; transform: scale(1);    filter: blur(40px); }
+      100% { opacity: 0;   transform: scale(1.1);  filter: blur(80px); }
+    }
+
+    /* ── MAIN ── */
+    #main {
+      opacity: 0;
+      transition: opacity 0.6s ease 0.5s;
+    }
+    #main.show { opacity: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .hero-inner { padding-top: 5rem; }
+
+    .hero-name {
+      font-size: clamp(2.5rem, 8vw, 5.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-desc {
+      font-size: 0.8rem;
+      line-height: 2;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+
+    /* ── LANGS ── */
+    .langs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .lang {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #333;
+      border: 1px solid #1c1c1c;
+      padding: 0.35em 0.8em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lang:not(.learning):hover {
+      color: #fff;
+      border-color: #444;
+    }
+    .lang.learning {
+      color: #3a3a3a;
+      border-style: dashed;
+    }
+    .learning-note {
+      margin-top: 1rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: #2a2a2a;
+    }
+  </style>
+</head>
+<body>
+
+<div id="gradient-overlay"></div>
+
+<div id="intro">
+  <span class="wave">👋</span>
+  <div class="intro-name">troojin</div>
+  <p class="intro-hint">click to continue</p>
+</div>
+
+<div id="main">
+  <nav>
+    <a href="index.html" class="nav-logo">troojin</a>
+    <ul class="nav-links">
+      <li><a href="about.html">about</a></li>
+      <li><a href="projects.html">projects</a></li>
+    </ul>
+  </nav>
+
+  <section id="hero">
+    <div class="wrap">
+      <div class="hero-inner">
+        <h1 class="hero-name">troojin</h1>
+        <p class="hero-desc">
+          I write code. HTML, CSS, Lua, JavaScript —<br>
+          whatever it takes to build something that works.
+        </p>
+        <div class="langs">
+          <span class="lang">HTML</span>
+          <span class="lang">CSS</span>
+          <span class="lang">JavaScript</span>
+          <span class="lang">Lua</span>
+          <span class="lang learning">Swift ✦</span>
+          <span class="lang learning">C++ ✦</span>
+        </div>
+        <p class="learning-note">✦ currently learning</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-name">troojin</span>
+    <span class="footer-note">built by hand</span>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+<script>
+  const intro   = document.getElementById('intro');
+  const main    = document.getElementById('main');
+  const overlay = document.getElementById('gradient-overlay');
+
+  intro.addEventListener('click', () => {
+    intro.classList.add('out');
+    overlay.classList.add('animate');
+    overlay.addEventListener('animationend', () => {
+      overlay.classList.remove('animate');
+    }, { once: true });
+    main.classList.add('show');
+  });
+</script>
+</body>
+</html>
