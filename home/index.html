@@ -118,8 +118,8 @@
       position: absolute;
       bottom: 4px;
       right: calc(50% - 60px + 7px);
-      width: 20px;
-      height: 20px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       background: #333;
       border: 3px solid #000;
@@ -242,6 +242,7 @@
   <footer>
     <span class="footer-name">troojin</span>
     <span class="footer-note">built by hand</span>
+    <img src="https://hits.sh/troojin.online.svg?style=flat&label=visitors&color=111111&labelColor=000000" alt="visitors" style="height:18px;opacity:0.4;"/>
   </footer>
 </div>
 
@@ -286,7 +287,7 @@
       // Activity
       const activity = activities?.find(a => a.type === 0);
       if (activity) {
-        activityText.textContent = 'playing ' + activity.name;
+        activityText.textContent = 'Playing ' + activity.name;
       } else {
         activityText.textContent = '';
       }
