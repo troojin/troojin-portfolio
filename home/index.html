@@ -94,6 +94,38 @@
       align-items: center;
     }
     .hero-inner { padding-top: 5rem; }
+
+    /* AVATAR */
+    .avatar-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.8rem;
+    }
+    .avatar-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      display: block;
+      background: #111;
+      object-fit: cover;
+    }
+    .avatar-status {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #333;
+      border: 2px solid #000;
+      transition: background 0.4s;
+    }
+    .avatar-status.online  { background: #23a55a; }
+    .avatar-status.idle    { background: #f0b232; }
+    .avatar-status.dnd     { background: #f23f43; }
+    .avatar-status.offline { background: #333; }
+
     .hero-name {
       font-size: clamp(2.5rem, 8vw, 5.5rem);
       font-weight: 300;
@@ -139,29 +171,12 @@
       color: #2a2a2a;
     }
 
-    /* DISCORD STATUS */
-    .discord-status {
-      margin-top: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #222;
-      flex-shrink: 0;
-      transition: background 0.4s;
-    }
-    .status-dot.online  { background: #23a55a; }
-    .status-dot.idle    { background: #f0b232; }
-    .status-dot.dnd     { background: #f23f43; }
-    .status-dot.offline { background: #333; }
-    .status-text {
+    /* ACTIVITY TEXT */
+    .activity-text {
+      margin-top: 1.5rem;
       font-size: 0.65rem;
       letter-spacing: 0.1em;
-      color: #333;
+      color: #2a2a2a;
     }
   </style>
 </head>
@@ -177,16 +192,23 @@
 
 <div id="main">
   <nav>
-    <a href="index.html" class="nav-logo">troojin</a>
+    <a href="home" class="nav-logo">troojin</a>
     <ul class="nav-links">
-      <li><a href="about.html">about</a></li>
-      <li><a href="projects.html">projects</a></li>
+      <li><a href="about">about</a></li>
+      <li><a href="projects">projects</a></li>
     </ul>
   </nav>
 
   <section id="hero">
     <div class="wrap">
       <div class="hero-inner">
+
+        <!-- Avatar with status dot -->
+        <div class="avatar-wrap">
+          <img class="avatar-img" id="avatar-img" src="" alt="troojin"/>
+          <span class="avatar-status" id="avatar-status"></span>
+        </div>
+
         <h1 class="hero-name">troojin</h1>
         <p class="hero-desc">
           I write code. HTML, CSS, Lua, JavaScript —<br>
@@ -207,10 +229,7 @@
           <span class="lang learning">Python</span>
         </div>
 
-        <div class="discord-status">
-          <span class="status-dot" id="status-dot"></span>
-          <span class="status-text" id="status-text">...</span>
-        </div>
+        <p class="activity-text" id="activity-text"></p>
       </div>
     </div>
   </section>
@@ -237,40 +256,40 @@
     main.classList.add('show');
   });
 
-  // Discord status via Lanyard
+  // Lanyard
   const DISCORD_ID = '1311039803118063668';
-  const dot  = document.getElementById('status-dot');
-  const text = document.getElementById('status-text');
+  const avatarImg    = document.getElementById('avatar-img');
+  const avatarStatus = document.getElementById('avatar-status');
+  const activityText = document.getElementById('activity-text');
 
-  const statusLabels = {
-    online:  'online',
-    idle:    'idle',
-    dnd:     'do not disturb',
-    offline: 'offline'
-  };
-
-  async function fetchStatus() {
+  async function fetchDiscord() {
     try {
       const res  = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
       const data = await res.json();
       if (!data.success) return;
 
-      const status = data.data.discord_status;
-      dot.className  = 'status-dot ' + status;
-      text.textContent = statusLabels[status] || status;
+      const { discord_status, discord_user, activities } = data.data;
 
-      // Show what they're doing if active
-      const activity = data.data.activities?.find(a => a.type === 0);
-      if (activity) {
-        text.textContent += ' — ' + activity.name;
+      // Avatar
+      if (discord_user.avatar) {
+        avatarImg.src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${discord_user.avatar}.png?size=128`;
       }
-    } catch (e) {
-      text.textContent = '';
-    }
+
+      // Status dot
+      avatarStatus.className = 'avatar-status ' + discord_status;
+
+      // Activity
+      const activity = activities?.find(a => a.type === 0);
+      if (activity) {
+        activityText.textContent = 'playing ' + activity.name;
+      } else {
+        activityText.textContent = '';
+      }
+    } catch (e) {}
   }
 
-  fetchStatus();
-  setInterval(fetchStatus, 30000); // refresh every 30s
+  fetchDiscord();
+  setInterval(fetchDiscord, 30000);
 </script>
 </body>
 </html>
