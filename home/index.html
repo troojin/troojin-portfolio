@@ -13,6 +13,7 @@
       inset: 0;
       background: #000;
       display: flex;
+      justify-content: center;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -91,34 +92,37 @@
     #hero {
       min-height: 100vh;
       display: flex;
+      justify-content: center;
       align-items: center;
     }
-    .hero-inner { padding-top: 5rem; }
+    .hero-inner { padding-top: 5rem; text-align: center; }
 
     /* AVATAR */
     .avatar-wrap {
       position: relative;
-      display: inline-block;
-      margin-bottom: 1.8rem;
+      display: flex;
+      justify-content: center;
+      justify-content: center;
+      margin-bottom: 2rem;
     }
     .avatar-img {
-      width: 64px;
-      height: 64px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
-      border: 2px solid #fff;
+      border: 2.5px solid #fff;
       display: block;
       background: #111;
       object-fit: cover;
     }
     .avatar-status {
       position: absolute;
-      bottom: 2px;
-      right: 2px;
-      width: 13px;
-      height: 13px;
+      bottom: 4px;
+      right: calc(50% - 60px + 7px);
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: #333;
-      border: 2px solid #000;
+      border: 3px solid #000;
       transition: background 0.4s;
     }
     .avatar-status.online  { background: #23a55a; }
@@ -143,6 +147,7 @@
     /* LANGS */
     .langs {
       display: flex;
+      justify-content: center;
       flex-wrap: wrap;
       gap: 0.5rem;
     }
@@ -192,10 +197,10 @@
 
 <div id="main">
   <nav>
-    <a href="home" class="nav-logo">troojin</a>
+    <a href="index.html" class="nav-logo">troojin</a>
     <ul class="nav-links">
-      <li><a href="about">about</a></li>
-      <li><a href="projects">projects</a></li>
+      <li><a href="about.html">about</a></li>
+      <li><a href="projects.html">projects</a></li>
     </ul>
   </nav>
 
