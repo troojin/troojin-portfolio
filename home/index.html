@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
   <style>
-    /* ── INTRO ── */
+    /* INTRO */
     #intro {
       position: fixed;
       inset: 0;
@@ -25,7 +25,6 @@
       visibility: hidden;
       pointer-events: none;
     }
-
     .wave {
       font-size: 2.8rem;
       display: inline-block;
@@ -40,14 +39,12 @@
       60%     { transform: rotate(-9deg); }
       80%     { transform: rotate(7deg); }
     }
-
     .intro-name {
       font-size: clamp(3rem, 13vw, 8rem);
       font-weight: 300;
       letter-spacing: -0.03em;
       color: #fff;
     }
-
     .intro-hint {
       margin-top: 2.5rem;
       font-size: 0.65rem;
@@ -61,7 +58,7 @@
       50%      { opacity: 1; }
     }
 
-    /* ── GRADIENT OVERLAY ── */
+    /* GRADIENT OVERLAY */
     #gradient-overlay {
       position: fixed;
       inset: 0;
@@ -83,21 +80,20 @@
       100% { opacity: 0;   transform: scale(1.1);  filter: blur(80px); }
     }
 
-    /* ── MAIN ── */
+    /* MAIN */
     #main {
       opacity: 0;
       transition: opacity 0.6s ease 0.5s;
     }
     #main.show { opacity: 1; }
 
-    /* ── HERO ── */
+    /* HERO */
     #hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
     }
     .hero-inner { padding-top: 5rem; }
-
     .hero-name {
       font-size: clamp(2.5rem, 8vw, 5.5rem);
       font-weight: 300;
@@ -105,7 +101,6 @@
       line-height: 1;
       margin-bottom: 1.5rem;
     }
-
     .hero-desc {
       font-size: 0.8rem;
       line-height: 2;
@@ -113,7 +108,7 @@
       margin-bottom: 2rem;
     }
 
-    /* ── LANGS ── */
+    /* LANGS */
     .langs {
       display: flex;
       flex-wrap: wrap;
@@ -142,6 +137,31 @@
       font-size: 0.6rem;
       letter-spacing: 0.15em;
       color: #2a2a2a;
+    }
+
+    /* DISCORD STATUS */
+    .discord-status {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #222;
+      flex-shrink: 0;
+      transition: background 0.4s;
+    }
+    .status-dot.online  { background: #23a55a; }
+    .status-dot.idle    { background: #f0b232; }
+    .status-dot.dnd     { background: #f23f43; }
+    .status-dot.offline { background: #333; }
+    .status-text {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: #333;
     }
   </style>
 </head>
@@ -172,17 +192,24 @@
           I write code. HTML, CSS, Lua, JavaScript —<br>
           whatever it takes to build something that works.
         </p>
+
         <div class="langs">
           <span class="lang">HTML</span>
           <span class="lang">CSS</span>
           <span class="lang">JavaScript</span>
           <span class="lang">Lua</span>
         </div>
+
         <p class="learning-note">currently learning</p>
         <div class="langs">
           <span class="lang learning">Swift</span>
           <span class="lang learning">C++</span>
           <span class="lang learning">Python</span>
+        </div>
+
+        <div class="discord-status">
+          <span class="status-dot" id="status-dot"></span>
+          <span class="status-text" id="status-text">...</span>
         </div>
       </div>
     </div>
@@ -196,6 +223,7 @@
 
 <script src="script.js"></script>
 <script>
+  // Intro + gradient
   const intro   = document.getElementById('intro');
   const main    = document.getElementById('main');
   const overlay = document.getElementById('gradient-overlay');
@@ -208,6 +236,41 @@
     }, { once: true });
     main.classList.add('show');
   });
+
+  // Discord status via Lanyard
+  const DISCORD_ID = '1311039803118063668';
+  const dot  = document.getElementById('status-dot');
+  const text = document.getElementById('status-text');
+
+  const statusLabels = {
+    online:  'online',
+    idle:    'idle',
+    dnd:     'do not disturb',
+    offline: 'offline'
+  };
+
+  async function fetchStatus() {
+    try {
+      const res  = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+      const data = await res.json();
+      if (!data.success) return;
+
+      const status = data.data.discord_status;
+      dot.className  = 'status-dot ' + status;
+      text.textContent = statusLabels[status] || status;
+
+      // Show what they're doing if active
+      const activity = data.data.activities?.find(a => a.type === 0);
+      if (activity) {
+        text.textContent += ' — ' + activity.name;
+      }
+    } catch (e) {
+      text.textContent = '';
+    }
+  }
+
+  fetchStatus();
+  setInterval(fetchStatus, 30000); // refresh every 30s
 </script>
 </body>
 </html>
